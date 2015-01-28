@@ -7,4 +7,4 @@ angular.module('userApp', [
   'mainCtrl',
   'userCtrl',
   'userService'
-  ]);
+]);

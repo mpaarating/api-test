@@ -42,11 +42,6 @@ app.use(express.static(__dirname + '/public'));
 var apiRoutes = require('./app/routes/api')(app, express);
 app.use('/api', apiRoutes);
 
-// api endpoint to get user information
-app.get('/me', function(req, res) {
-  res.send(req.decoded);
-});
-
 
 
 // MAIN CATCHALL ROUTE ----------

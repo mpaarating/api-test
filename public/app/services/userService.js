@@ -14,7 +14,7 @@ angular.module('userService', [])
   };
 
   // create a user
-  userFactory.create = function(userData){
+  userFactory.make = function(userData){
     return $http.post('/api/users/', userData);
   };
 

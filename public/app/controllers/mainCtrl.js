@@ -1,7 +1,6 @@
 'use strict';
 angular.module('mainCtrl', [])
-
-  .controller('mainController', function($rootScope, $location, Auth) {
+  .controller('MainController', function($rootScope, $location, Auth) {
 
     var vm = this;
 
@@ -15,16 +14,25 @@ angular.module('mainCtrl', [])
 
     // get user information on page load
     Auth.getUser()
-      .success(function(data) {
+      .then(function(data) {
         vm.user = data;
       });
 
     // function to handle login form
     vm.doLogin = function() {
 
+      // creates a 'processing' state for the spinner
+      vm.processing = true;
+
+      // clear error status
+      vm.error = '';
+
       // call the Auth.login() function
       Auth.login(vm.loginData.username, vm.loginData.password)
         .success(function(data) {
+
+          // indicates finished processing
+          vm.processing = false;
 
           // get user information after logging in
           Auth.getUser()
@@ -33,7 +41,11 @@ angular.module('mainCtrl', [])
             });
 
           // if a user successfully logs in, redirect to users page
-          $location.path('/users');
+          if (data.success){
+            $location.path('/users');
+          } else {
+            vm.error = data.message;
+          }
         });
     };
 

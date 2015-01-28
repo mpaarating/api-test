@@ -35,20 +35,19 @@ angular.module('authService', [])
     // check if a user is logged in
     // checks if there is a local token
     authFactory.isLoggedIn = function(){
-      if (AuthToken.getToken())
-        return true;
-      else
-        return false;
+      return AuthToken.getToken();
     };
 
     // get the logged in user
     authFactory.getUser = function(){
-      if (AuthToken.getToken())
+      if (AuthToken.getToken()) {
         return $http.get('/api/me');
-      else
+      }
+      else {
         return $q.reject({
           message: 'User has no token.'
         });
+      }
     };
 
     return authFactory;
@@ -59,7 +58,7 @@ angular.module('authService', [])
 // factory for handling tokens
 // inject $window to store token client-side
 // ===================================================
-.factory('AuthToken', function($window){
+  .factory('AuthToken', function($window){
 
     var authTokenFactory = {};
 
@@ -72,10 +71,12 @@ angular.module('authService', [])
     // if a token is passed, set the token
     // if there is not token, clear it from local storage
     authTokenFactory.setToken = function(token){
-      if (token)
+      if (token) {
         $window.localStorage.setItem('token', token);
-      else
+      }
+      else {
         $window.localStorage.removeItem('token');
+      }
     };
 
     return authTokenFactory;
@@ -85,7 +86,7 @@ angular.module('authService', [])
 // ===================================================
 // application configuration to integrate token into requests
 // ===================================================
-.factory('AuthInterceptor', function($q, $location, AuthToken){
+  .factory('AuthInterceptor', function($q, $location, AuthToken){
 
     var interceptorFactory = {};
 
@@ -95,8 +96,9 @@ angular.module('authService', [])
       var token = AuthToken.getToken();
 
       // if the token exists, add it to the header as x-access-token
-      if (token)
+      if (token) {
         config.headers['x-access-token'] = token;
+      }
 
       return config;
     };
@@ -106,7 +108,9 @@ angular.module('authService', [])
 
       // if our server returns a 403 forbidden response
       if (response.status == 403)
+      {
         $location.path('/login');
+      }
 
       // return the errors from the server as a promise
       return $q.reject(response);

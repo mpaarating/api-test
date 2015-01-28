@@ -9,6 +9,12 @@ angular.module('appRoutes', ['ngRoute'])
       // home page route
       .when('/', {
         templateUrl : 'app/views/pages/home.html'
+      })
+
+      .when('/login', {
+        templateUrl: 'app/views/pages/login.html',
+        controller: 'MainController',
+        controllerAs: 'login'
       });
 
     // get rid of the hash in the URL
